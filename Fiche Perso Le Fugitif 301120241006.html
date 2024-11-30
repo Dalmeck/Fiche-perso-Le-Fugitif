@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Fiche de Personnage - Le Fugitif</title>
+    <style>
+        /* Vos styles CSS restent inchangés */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #0a0a0f;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1, h2 {
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        h1 {
+            font-size: 2em;
+            color: #00b3ff;
+            text-shadow: 0 0 15px #00b3ff;
+        }
+        h2 {
+            font-size: 1.2em;
+            color: #ff6a00;
+            text-shadow: 0 0 10px #ff6a00;
+        }
+        .fiche {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+            background: linear-gradient(145deg, #121217, #1a1a1f);
+            border: 2px solid #00b3ff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #00b3ff, 0 0 8px #ff6a00 inset;
+        }
+        input[type="text"].name-input {
+            font-size: 1.5em;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: #ff6a00;
+            text-shadow: 0 0 15px #ff6a00;
+            border-bottom: 2px solid #00b3ff;
+            outline: none;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .image-preview {
+            width: 100%;
+            max-width: 280px;
+            height: 350px;
+            background: #1f1f24;
+            border: 4px solid #00b3ff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00b3ff;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .image-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .image-label::after {
+            content: 'Cliquez pour ajouter une image';
+            color: #00b3ff;
+            text-shadow: 0 0 10px #00b3ff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .slot {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #1f1f24;
+            border: 2px solid #00b3ff;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px #00b3ff;
+            position: relative;
+            overflow: hidden;
+        }
+        .slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .slot-label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #121217;
+            border: 1px solid #3e3e44;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #3e3e44;
+        }
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #ff6a00;
+            text-shadow: 0 0 10px #ff6a00;
+            border-bottom: 2px solid #00b3ff;
+            padding-bottom: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            background: #1f1f24;
+            color: #ffffff;
+            border: 1px solid #00ff88;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px #00ff88;
+            font-family: 'Orbitron', sans-serif;
+        }
+        textarea {
+            resize: none;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="fiche">
+        <h1>Fiche de Personnage</h1>
+        <h2>Le Fugitif - Polarpunk Uchronie</h2>
+
+        <!-- Nom du personnage -->
+        <input type="text" class="name-input" placeholder="Entrez le nom du personnage ici">
+
+        <!-- Cadre pour l'image du personnage -->
+        <div class="image-preview" id="image-preview">
+            <label class="image-label" for="file-input"></label>
+            <!-- Ajout de l'élément img -->
+            <img id="main-image" src="" alt="Image du personnage" style="display: none;">
+        </div>
+        <!-- L'input est en dehors du conteneur pour éviter sa suppression -->
+        <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="previewImage(event)">
+
+        <!-- Slots pour les objets -->
+        <div class="section">
+            <h3 class="section-title">Inventaire</h3>
+            <div class="slots">
+                <!-- Slot 1 -->
+                <div class="slot" id="slot-1">
+                    <label class="slot-label" for="slot-input-1"></label>
+                    <img id="slot-img-1" src="" alt="Objet 1" style="display: none;">
+                </div>
+                <input type="file" id="slot-input-1" accept="image/*" style="display: none;" onchange="previewSlot(event, 1)">
+
+                <!-- Slot 2 -->
+                <div class="slot" id="slot-2">
+                    <label class="slot-label" for="slot-input-2"></label>
+                    <img id="slot-img-2" src="" alt="Objet 2" style="display: none;">
+                </div>
+                <input type="file" id="slot-input-2" accept="image/*" style="display: none;" onchange="previewSlot(event, 2)">
+
+                <!-- Slot 3 -->
+                <div class="slot" id="slot-3">
+                    <label class="slot-label" for="slot-input-3"></label>
+                    <img id="slot-img-3" src="" alt="Objet 3" style="display: none;">
+                </div>
+                <input type="file" id="slot-input-3" accept="image/*" style="display: none;" onchange="previewSlot(event, 3)">
+
+                <!-- Slot 4 -->
+                <div class="slot" id="slot-4">
+                    <label class="slot-label" for="slot-input-4"></label>
+                    <img id="slot-img-4" src="" alt="Objet 4" style="display: none;">
+                </div>
+                <input type="file" id="slot-input-4" accept="image/*" style="display: none;" onchange="previewSlot(event, 4)">
+            </div>
+        </div>
+
+        <!-- Identité -->
+        <div class="section">
+            <h3 class="section-title">Identité</h3>
+            <label>Alias :</label>
+            <input type="text" placeholder="Entrez l'alias">
+            <label>Profession :</label>
+            <input type="text" placeholder="Entrez la profession">
+            <label>Affiliation :</label>
+            <input type="text" placeholder="Entrez l'affiliation">
+        </div>
+
+        <!-- Statistiques Principales -->
+        <div class="section">
+            <h3 class="section-title">Statistiques Principales</h3>
+            <label>Points de Vie (PV) :</label>
+            <input type="number" placeholder="Entrez les PV">
+            <label>Intellect (INT) :</label>
+            <input type="number" placeholder="Entrez les points d'Intellect">
+            <label>Force (FOR) :</label>
+            <input type="number" placeholder="Entrez les points de Force">
+            <label>Endurance (STA) :</label>
+            <input type="number" placeholder="Entrez les points d'Endurance">
+        </div>
+
+        <!-- Compétences -->
+        <div class="section">
+            <h3 class="section-title">Compétences</h3>
+            <textarea placeholder="Listez les compétences ici"></textarea>
+        </div>
+
+        <!-- Pouvoir Unique -->
+        <div class="section">
+            <h3 class="section-title">Pouvoir Unique</h3>
+            <label>Nom du Pouvoir :</label>
+            <input type="text" placeholder="Entrez le nom du pouvoir">
+            <label>Description :</label>
+            <textarea placeholder="Décrivez le pouvoir"></textarea>
+        </div>
+
+        <!-- Histoire -->
+        <div class="section">
+            <h3 class="section-title">Histoire</h3>
+            <textarea placeholder="Écrivez l'histoire et les motivations ici"></textarea>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const imgElement = document.getElementById('main-image');
+            const file = event.target.files[0];
+            if (file) {
+                imgElement.src = URL.createObjectURL(file);
+                imgElement.onload = () => URL.revokeObjectURL(imgElement.src);
+                imgElement.style.display = 'block';
+                // Supprimer le texte du label après sélection
+                const label = document.querySelector('.image-label');
+                label.style.display = 'none';
+            }
+        }
+
+        function previewSlot(event, slotIndex) {
+            const imgElement = document.getElementById(`slot-img-${slotIndex}`);
+            const file = event.target.files[0];
+            if (file) {
+                imgElement.src = URL.createObjectURL(file);
+                imgElement.onload = () => URL.revokeObjectURL(imgElement.src);
+                imgElement.style.display = 'block';
+                // Supprimer le texte du label après sélection
+                const label = document.querySelector(`#slot-${slotIndex} .slot-label`);
+                label.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
